@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="echarts.min.js"></script>
+  
+</head>
+<body>
+
+    <!--
+        文档：
+    
+        服务器传输数据的格式为 {
+                                "nodes":[//节点
+                                        {
+                                            "name":"节点1",//名称
+                                            "attributes": {},           
+                                            "id": "node1",//id
+                                            "size": 40,//圆的大小
+                                            "category" :1//类别
+                                        }
+                                    ],
+                                "links":[//连接
+                                        {
+                                            "source": "node1",//源点
+                                            "target": "node2"//目标
+                                        }
+                                    ]
+            
+                                }
+        
+        nodes 属性中的category 是类别，就是类目的意思，将不同的树给分开，表示不同的颜色。
+    -->
+
+
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <div id = "div1"></div>
+    <script type="text/javascript">
+
+    var graph = {//数据
+            "nodes": [//节点
+                {
+                    
+                    "name":"节点1",//名称
+                    "attributes": {},           
+                    "id": "node1",//id
+                    "size": 40,//圆的大小
+                    "category" :1//类别
+                },
+                {
+                   
+                    "name":"节点2",
+                    "attributes": {},
+                    "id": "node2",
+                    "size": 10,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"节点3",
+                    "attributes": {},
+                    "id": "node3",
+                    "size": 30,
+                    "category" :0//类别
+                },
+                {
+                    
+                    "name":"节点4",
+                    "attributes": {},
+                    "id": "node4",
+                    "size": 20,
+                    "category" :0//类别
+                },
+                {
+                   
+                    "name":"节点5",
+                    "attributes": {},
+                    "id": "node5",
+                    "size": 10,
+                    "category" :0//类别
+                },
+                {
+                    
+                    "name":"节点6",
+                    "attributes": {},
+                    "id": "node6",
+                    "size": 20,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"节点7",
+                    "attributes": {},
+                    "id": "node7",
+                    "size": 20,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"节点8",
+                    "attributes": {},
+                    "id": "node8",
+                    "size": 20,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"节点9",
+                    "attributes": {},
+                    "id": "node9",
+                    "size": 20,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"节点10",
+                    "attributes": {},
+                    "id": "node10",
+                    "size": 20,
+                    "category" :0//类别
+                },
+                {
+                    
+                    "name":"节点11",
+                    "attributes": {},
+                    "id": "node11",
+                    "size": 20,
+                    "category" :2//类别
+                },
+                {
+                    
+                    "name":"节点12",
+                    "attributes": {},
+                    "id": "node12",
+                    "size": 20,
+                    "category" :2//类别
+                }
+                 
+            ],
+            "links": [//连接
+                {
+                    "source": "node1",//源点
+                    "target": "node2"//目标
+                },
+                {
+                    "source": "node3",
+                    "target": "node4"
+                },
+                {
+                    "source": "node4",
+                    "target": "node5"
+                },
+                {
+                    "source": "node1",
+                    "target": "node6"
+                },
+                {
+                    "source": "node1",
+                    "target": "node7"
+                },
+                {
+                    "source": "node7",
+                    "target": "node8"
+                },
+                {
+                    "source": "node7",
+                    "target": "node9"
+                },
+                {
+                    "source": "node4",
+                    "target": "node10"
+                },
+                {
+                    "source": "node11",
+                    "target": "node12"
+                }
+
+            ]
+        };
+
+
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    myChart.hideLoading();
+    var categories = [];
+    for (var i = 0; i < 3; i++) {
+        categories[i] = {
+            name: '类型' + i
+        };
+    }
+    graph.nodes.forEach(function (node) {
+        node.itemStyle = null;//
+        node.symbolSize = node.size;//强制指定节点的大小   
+        // Use random x, y
+        node.x = node.y = null;
+        node.draggable = true;
+       
+    });
+    option = {
+        title: {
+            text: 'demo',//文本标题
+            subtext: 'Default layout',//副标题
+            top: 'bottom',//上下位置  
+            left: 'right'//左右位置
+        },
+        tooltip: {
+            formatter: function (params, ticket, callback) {//回调函数
+                 var str = appendPath(graph.nodes[params.dataIndex].id);
+                 document.getElementById("div1").innerHTML = str;
+                 return str;//
+             }
+        },
+        legend: [{
+            // selectedMode: 'single',
+            data: categories.map(function (a) {//显示策略
+                return a.name;
+            })
+        }],
+        animation: false,//是否开启动画
+        series : [
+            {
+                name: '',
+                type: 'graph',
+                layout: 'force',
+                data: graph.nodes,//节点数据
+                links: graph.links,//节点边数据
+                categories: categories,//策略
+                roam: true,//是否开启滚轮缩放和拖拽漫游，默认为false（关闭），其他有效输入为true（开启），'scale'（仅开启滚轮缩放），'move'（仅开启拖拽漫游）
+                label: {
+                    normal: {
+                        show:'false',
+                        position: 'right'
+                    }
+                },
+                slient:false,//是否响应点击事件，为false的时候就是响应
+                force: {
+                    repulsion: 100
+                }
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+
+
+    /**
+        拼接路径
+     */
+    function appendPath(id){ 
+        var str = id;
+        var links = graph.links;
+        var i = 0;
+        var map = {};
+        for( i = 0 ; i < links.length; i++){
+            map[links[i].target] = links[i].source;
+        }
+        while(true){           
+            if(map[id] == undefined){
+                break;
+            }
+            str = map[id]  +"->" + str;
+            id = map[id] ;
+        }
+        return str;
+    }
+    </script>
+</body>
+</html>
