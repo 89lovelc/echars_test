@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+
+
+    <!-- 文档
+        
+        传过来的数据：
+            ｛
+                nodes:{
+                    
+                    "name":"node1",//名称                             
+                    "value": 40,//圆的大小
+                    "category" :1//类别
+                },
+                links:{
+                    "source": "node1",//源点
+                    "weight" : 1,//权重
+                    "target": "node2"//目标
+                }
+
+            ｝
+        
+        点击事件 例子为 node1
+    -->
+</head>
+
+<body>
+    <!--Step:1 Prepare a dom for ECharts which (must) has size (width & hight)-->
+    <!--Step:1 为ECharts准备一个具备大小（宽高）的Dom-->
+    <div id="main" style="height:500px;border:1px solid #ccc;padding:10px;"></div>
+    
+    <div id = "div1"></div>
+    <!--Step:2 Import echarts.js-->
+    <!--Step:2 引入echarts.js-->
+    <script src="js/echarts.js"></script>
+    
+    <script type="text/javascript">
+        var graph = {//数据
+            "nodes": [//节点
+                {
+                    
+                    "name":"node1",//名称                             
+                    "id": "node1",//id
+                    "value": 40,//圆的大小
+                    "url":"http://www.baidu.com",
+                    "category" :1//类别
+                },
+                {
+                   
+                    "name":"node2",                  
+                    "id": "node2",
+                    "value": 10,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"node3",                   
+                    "id": "node3",
+                    "value": 30,
+                    "category" :0//类别
+                },
+                {
+                    
+                    "name":"node4",                  
+                    "id": "node4",
+                    "value": 20,
+                    "category" :0//类别
+                },
+                {
+                   
+                    "name":"node5",                  
+                    "id": "node5",
+                    "value": 10,
+                    "category" :0//类别
+                },
+                {
+                    
+                    "name":"node6",                  
+                    "id": "node6",
+                    "value": 20,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"node7",                  
+                    "id": "node7",
+                    "value": 20,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"node8",                
+                    "id": "node8",
+                    "value": 20,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"node9",                    
+                    "id": "node9",
+                    "value": 20,
+                    "category" :1//类别
+                },
+                {
+                    
+                    "name":"node10",                  
+                    "id": "node10",
+                    "value": 20,
+                    "category" :0//类别
+                },
+                {
+                    
+                    "name":"node11",                    
+                    "id": "node11",
+                    "value": 20,
+                    "category" :2//类别
+                },
+                {
+                    
+                    "name":"node12",               
+                    "id": "node12",
+                    "value": 20,
+                    "category" :2//类别
+                }
+                 
+            ],
+            "links": [//连接
+                {
+                    "source": "node1",//源点
+                    "weight" : 1,//权重
+                    "target": "node2"//目标
+
+                },
+                {
+                    "source": "node3",
+                    "weight" : 1,
+                    "target": "node4"
+                },
+                {
+                    "source": "node4",
+                    "weight" : 1,
+                    "target": "node5"
+                },
+                {
+                    "source": "node1",
+                    "weight" : 1,
+                    "target": "node6"
+                },
+                {
+                    "source": "node1",
+                    "weight" : 1,
+                    "target": "node7"
+                },
+                {
+                    "source": "node7",
+                    "weight" : 1,
+                    "target": "node8"
+                },
+                {
+                    "source": "node7",
+                    "weight" : 1,
+                    "target": "node9"
+                },
+                {
+                    "source": "node4",
+                    "weight" : 1,
+                    "target": "node10"
+                },
+                {
+                    "source": "node11",
+                    "weight" : 1,
+                    "target": "node12"
+                }
+
+            ]
+        };
+
+        //类型的确定
+        var categories = [];
+        var categorieNames = [];
+        for (var i = 0; i < 3; i++) {
+            categories[i] = {
+                name: '类型' + i
+            };
+            categorieNames[i]  = '类型' + i;
+        }
+        
+
+    // Step:3 conifg ECharts's path, link to echarts.js from current page.
+    // Step:3 为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
+    require.config({
+        paths: {
+            echarts: './js'
+        }
+    });
+    
+    // Step:4 require echarts and use it in the callback.
+    // Step:4 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+
+    require([ 
+        'echarts', 'echarts/chart/force' // 使用柱状图就加载bar模块，按需加载  
+        ], function(ec) {  
+            // 基于准备好的dom，初始化echarts图表  
+            var myChart = ec.init(document.getElementById('main'));  
+            // 添加点击事件  
+            var ecConfig = require('echarts/config');  
+            myChart.on(ecConfig.EVENT.CLICK, eConsole);    
+            var option = {  
+                title: {
+                    text: 'demo',//文本标题
+                    subtext: 'Default layout',//副标题
+                    x:'right',
+                    y:'bottom'
+                },
+                tooltip : {    
+                    formatter: function (params, ticket, callback) {//回调函数
+                         var str = appendPath(graph.nodes[params.dataIndex].id);
+                         document.getElementById("div1").innerHTML = str;
+                         return str;//
+                     }
+                },  
+                toolbox : {  
+                    show : true,  
+                    feature : {  
+                        restore : {show: true},
+                        magicType: {show: true, type: ['force', 'chord']},
+                        saveAsImage : {show: true}  
+                    }  
+                },  
+                legend: {
+                    x: 'left',
+                    data:categorieNames
+                },
+                series : [ {  
+                    type : 'force',  
+                    name : "关系",  
+                    ribbonType : false,  
+                    clickable : true,  
+                    draggable : true,  
+                    categories :categories,
+                    itemStyle : {  
+                        normal : {  
+                            label : {  
+                                show:true
+                            },  
+                            nodeStyle : {  
+                                brushType : 'both',  
+                                borderColor : 'rgba(255,215,0,0.4)',  
+                                borderWidth : 1  
+                            },  
+                            linkStyle : {  
+                                type : 'curve'  
+                            }  
+                        },    
+                    },  
+                    useWorker : false,  
+                    minRadius : 15,  
+                    maxRadius : 25,  
+                    gravity : 1.1,  
+                    scaling : 1.1,  
+                    roam : false,  
+                    nodes:graph.nodes,
+                    links:graph.links                 
+                } ]  
+            };  
+      
+            // 为echarts对象加载数据  
+            myChart.setOption(option);  
+              
+        });  
+  
+  /**
+     点击事件处理
+  */
+    function eConsole(param) {    
+        if (typeof param.seriesIndex == 'undefined') {    
+            return;    
+        }    
+
+        if (param.type == 'click') {    
+            //param.dataIndex 得到节点的index
+            window.location.href = graph.nodes[param.dataIndex].url;
+        }    
+    }    
+   
+   /**
+        拼接路径
+     */
+    function appendPath(id){ 
+        var str = id;
+        var links = graph.links;
+        var i = 0;
+        var map = {};
+        for( i = 0 ; i < links.length; i++){
+            map[links[i].target] = links[i].source;
+        }
+        while(true){           
+            if(map[id] == undefined){
+                break;
+            }
+            str = map[id]  +"->" + str;
+            id = map[id] ;
+        }
+        return str;
+    }
+
+    </script>
+</body>
+</html>

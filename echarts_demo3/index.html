@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+
+
+</head>
+
+<body>
+    <!--Step:1 Prepare a dom for ECharts which (must) has size (width & hight)-->
+    <!--Step:1 为ECharts准备一个具备大小（宽高）的Dom-->
+    <div id="main" style="height:800px;border:1px "></div>
+    
+    <div id = "div1"></div>
+    <!--Step:2 Import echarts.js-->
+    <!--Step:2 引入echarts.js-->
+    <script src="js/echarts.js"></script>
+    
+    <script type="text/javascript">
+       
+
+        // 构造数据
+        var trees = [
+                {
+                        "name":"区域位置价值",//名称                             
+                        "id": "区域位置价值",//id
+                        "url":"http://www.baidu.com",
+                        "children":[
+                            {   
+                                "name":"区域通信分时段活跃度",//名称                             
+                                "id": "区域通信分时段活跃度",//id
+                                "url":"http://www.baidu.com",  
+                                 "children":[
+                                        {
+                                            "name":"基站区域语音通话量",//名称                             
+                                            "id": "基站区域语音通话量",//id
+                                            "url":"http://www.baidu.com", 
+                                            "children":[    
+                                                {
+                                                    "name":"通话基站汇总表",//名称                             
+                                                    "id": "通话基站汇总表",//id
+                                                    "url":"http://www.baidu.com" 
+                                                },{
+                                                    "name":"基站参数日表",//名称                             
+                                                    "id": "基站参数日表",//id
+                                                    "url":"http://www.baidu.com"
+                                                }
+                                            ]
+                                        },{
+                                            "name":"基站GPRS使用量",//名称                             
+                                            "id": "基站GPRS使用量",//id
+                                            "url":"http://www.baidu.com",
+                                            "children":[    
+                                                {
+                                                    "name":"GPRS基站汇总表",//名称                             
+                                                    "id": "GPRS基站汇总表",//id
+                                                    "url":"http://www.baidu.com" 
+                                                },{
+                                                    "name":"基站参数日表",//名称                             
+                                                    "id": "基站参数日表",//id
+                                                    "url":"http://www.baidu.com"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                            },{
+                                "name":"区域人均GDP与可支配收入",//名称                             
+                                "id": "区域人均GDP与可支配收入",//id
+                                "url":"http://www.baidu.com",
+                                "children":[
+                                        {
+                                            "name":"区域人均GDP",//名称                             
+                                            "id": "区域人均GDP",//id
+                                            "url":"http://www.baidu.com",    
+                                        },{
+                                            "name":"区域人均收入（外部导入）",//名称                             
+                                            "id": "区域人均收入（外部导入）",//id
+                                            "url":"http://www.baidu.com",
+                                        }
+                                    ]
+                            }
+                        ]
+                 },{
+                    "name":"三元验真查询",//名称                             
+                    "id": "三元验真查询",//id
+                    "url":"http://www.baidu.com",
+                    "children":[
+                            {
+                                "name":"用户资料",//名称                             
+                                "id": "用户资料",//id
+                                "url":"http://www.baidu.com",    
+                            }
+                        ]
+                 },{
+                    "name":"区域人流量接口",//名称                             
+                    "id": "区域人流量接口",//id
+                    "url":"http://www.baidu.com",
+                    "children":[
+                            {
+                                "name":"基站信令准实时汇总",//名称                             
+                                "id": "基站信令准实时汇总",//id
+                                "url":"http://www.baidu.com",    
+                            }
+                        ]
+                 },{
+                    "name":"用户标签数据文件下载",//名称                             
+                    "id": "用户标签数据文件下载",//id
+                    "url":"http://www.baidu.com",
+                    "children":[
+                            {
+                                "name":"客户标签表",//名称                             
+                                "id": "客户标签表",//id
+                                "url":"http://www.baidu.com",    
+                            }
+                        ]
+                 },{
+                    "name":"网站访问用户价值",//名称                             
+                    "id": "网站访问用户价值",//id
+                    "url":"http://www.baidu.com",
+                    "children":[
+                            {
+                                "name":"上网行为小时汇总数据",//名称                             
+                                "id": "上网行为小时汇总数据",//id
+                                "url":"http://www.baidu.com",    
+                            },
+                            {
+                                "name":"用户信用度星级信息",//名称                             
+                                "id": "用户信用度星级信息",//id
+                                "url":"http://www.baidu.com",    
+                            }
+                        ]
+                 },{
+                    "name":"移动网站访问汇总查询",//名称                             
+                    "id": "移动网站访问汇总查询",//id
+                    "url":"http://www.baidu.com",
+                    "children":[
+                            {
+                                "name":"上网行为小时汇总数据",//名称                             
+                                "id": "上网行为小时汇总数据",//id
+                                "url":"http://www.baidu.com",    
+                            }
+                        ]
+                 },{
+                    "name":"手机使用量查询",//名称                             
+                    "id": "手机使用量查询",//id
+                    "url":"http://www.baidu.com",
+                    "children":[
+                            {
+                                "name":"终端使用信息汇总表",//名称                             
+                                "id": "终端使用信息汇总表",//id
+                                "url":"http://www.baidu.com",    
+                            }
+                        ]
+                 },{
+                    "name":"TAC码对应终端查询",//名称                             
+                    "id": "TAC码对应终端查询",//id
+                    "url":"http://www.baidu.com",
+                    "children":[
+                            {
+                                "name":"TAC号与终端类型的对应关系",//名称                             
+                                "id": "TAC号与终端类型的对应关系",//id
+                                "url":"http://www.baidu.com",    
+                            }
+                        ]
+                 }
+
+        ];
+
+
+
+        //定义结构
+        var graph ={
+            nodes:[],
+            links:[]    
+        } ;
+
+        //树的深度
+        dept = 0;
+        decodeTrees(trees);
+
+        //类型的确定
+        var categories = [];
+        var categorieNames = [];
+        for (var i = 0; i < dept+1; i++) {
+            categories[i] = {
+                name: '类型' + i
+            };
+            categorieNames[i]  = '类型' + i;
+        }
+        
+
+    // Step:3 conifg ECharts's path, link to echarts.js from current page.
+    // Step:3 为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
+    require.config({
+        paths: {
+            echarts: './js'
+        }
+    });
+    
+    // Step:4 require echarts and use it in the callback.
+    // Step:4 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+
+    require([ 
+        'echarts', 'echarts/chart/force' // 使用柱状图就加载bar模块，按需加载  
+        ], function(ec) {  
+            // 基于准备好的dom，初始化echarts图表  
+            var myChart = ec.init(document.getElementById('main'));  
+            // 添加点击事件  
+            var ecConfig = require('echarts/config');  
+            myChart.on(ecConfig.EVENT.CLICK, eConsole);    
+            var option = {  
+                title: {
+                    text: 'demo',//文本标题
+                    subtext: 'Default layout',//副标题
+                    x:'right',
+                    y:'bottom'
+                },
+                tooltip : {    
+                    formatter: function (params, ticket, callback) {//回调函数
+                         // var str = appendPath(graph.nodes[params.dataIndex].id);
+                         // document.getElementById("div1").innerHTML = str;
+                         return graph.nodes[params.dataIndex].id;//
+                     }
+                },  
+                toolbox : {  
+                    show : true,  //是否显示策略
+                    feature : {  
+                        restore : {show: true},
+                        magicType: {show: true, type: ['force', 'chord']},
+                        saveAsImage : {show: true}  
+                    }  
+                },  
+                legend: {
+                    x: 'left',
+                    data:categorieNames
+                },
+                series : [ {  
+                    type : 'force',  
+                    name : "关系",  
+                    ribbonType : false,  
+                    clickable : true,  
+                    draggable : true,  
+                    categories :categories,
+                    itemStyle : {  
+                        normal : {  
+                            label : {  
+                                show:true
+                            },  
+                            nodeStyle : {  
+                                brushType : 'both',  
+                                borderColor : 'rgba(255,215,0,0.4)',  
+                                borderWidth : 1  
+                            },  
+                            linkStyle : {  
+                                type : 'curve'  
+                            }  
+                        },    
+                    },  
+                    useWorker : false,  
+                    minRadius : 15,  
+                    maxRadius : 25,  
+                    gravity : 1.1,  
+                    scaling : 1.1,  
+                    roam : false,  
+                    nodes:graph.nodes,
+                    links:graph.links                 
+                } ]  
+            };  
+      
+            // 为echarts对象加载数据  
+            myChart.setOption(option);  
+              
+        });  
+  
+  /**
+     点击事件处理
+  */
+    function eConsole(param) {    
+        if (typeof param.seriesIndex == 'undefined') {    
+            return;    
+        }    
+
+        if (param.type == 'click') {    
+            //param.dataIndex 得到节点的index
+            window.location.href = graph.nodes[param.dataIndex].url;
+        }    
+    }    
+   
+   /**
+        拼接路径
+     */
+    function appendPath(id){ 
+        var str = id;
+        var links = graph.links;
+        var i = 0;
+        var map = {};
+        for( i = 0 ; i < links.length; i++){
+            map[links[i].target] = links[i].source;
+        }
+        while(true){           
+            if(map[id] == undefined){
+                break;
+            }
+            str = map[id]  +"->" + str;
+            id = map[id] ;
+        }
+        return str;
+    }
+
+
+        //转化一棵树
+        function decodeTree(myNode,num,size){
+           var  node = {
+                "name":myNode.name,
+                "id":myNode.id,
+                "url":myNode.url,
+                "category":num,
+                "symbolSize": size * 0.8
+            }
+            
+            graph.nodes.push(node);
+
+            if(myNode.children == undefined){
+                return;
+            }            
+            var len = myNode.children.length;
+            num++;
+            if(num > dept){
+                dept = num;
+            }
+            for (var i = 0; i < len; i++) {
+                var link = {
+                    "source": myNode.name,
+                    "weight" : 1,
+                    "target": myNode.children[i].name
+                }
+                graph.links.push(link);
+                decodeTree(myNode.children[i],num,size * 0.8);
+            };
+        }
+
+        //转化多棵树
+        function decodeTrees(trees){
+            for(var i = 0 ; i <  trees.length; i++){
+                decodeTree(trees[i],0,60);
+            }
+        }
+    </script>
+</body>
+</html>
